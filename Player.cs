@@ -3,11 +3,11 @@ using SwinAdventure;
 
 namespace SwinAdventure
 {
-    public class Bag : Item,IHaveInventory
+    public class Player : GameObject,IHaveInventory
     {
         private Inventory _inventory;
 
-        public Bag(string[] ids, string name, string desc) : base(ids, name, desc)
+        public Player(string name, string desc) : base(new string[] { "me", "inventory" }, name, desc)
         {
             _inventory = new Inventory();
         }
@@ -18,19 +18,14 @@ namespace SwinAdventure
             {
                 return this;
             }
-            else
-            {
-                return _inventory.Fetch(id);
-            }
-
-            return null;
+            return _inventory.Fetch(id);
         }
 
         public override string FullDescription
         {
             get
             {
-                return $"In the {Name} You can see: {_inventory.ItemList}";
+                return $"You are {this.Name} {base.FullDescription} You are carrying: {Inventory.ItemList}";
             }
         }
 
@@ -39,10 +34,6 @@ namespace SwinAdventure
             get
             {
                 return _inventory;
-            }
-            set
-            {
-                _inventory = value;
             }
         }
     }
