@@ -3,7 +3,7 @@ using SwinAdventure;
 
 namespace SwinAdventure
 {
-    public class Player : GameObject,IHaveInventory
+    public class Player : GameObject, IHaveInventory
     {
         private Inventory _inventory;
 

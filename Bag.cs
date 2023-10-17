@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Xml.Linq;
 using SwinAdventure;
 
 namespace SwinAdventure
 {
-    public class Bag : Item,IHaveInventory
+    public class Bag : Item, IHaveInventory
     {
         private Inventory _inventory;
 

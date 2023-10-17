@@ -1,8 +1,4 @@
-﻿
-
-using System;
-using System.ComponentModel;
-using System.Xml.Linq;
+﻿using System;
 using SwinAdventure;
 
 namespace SwinAdventure
@@ -10,7 +6,7 @@ namespace SwinAdventure
     public class LookCommand : Command
     {
 
-        public LookCommand() : base(ids: new string[] { "look" })
+        public LookCommand() : base(new string[] { "look" })
         {
         }
 
@@ -43,7 +39,7 @@ namespace SwinAdventure
             {
                 IHaveInventory container = p as IHaveInventory;
                 string ItemId = text[2];
-                return LookAtIn(ItemId,container);
+                return LookAtIn(ItemId, container);
             }
 
 
@@ -52,7 +48,7 @@ namespace SwinAdventure
                 string ItemId = text[2];
                 string containerID = text[4];
                 IHaveInventory container = FetchContainer(p, containerID);
-                if(container is null)
+                if (container is null)
                 {
                     return $"i cannot find the {containerID}";
                 }
@@ -77,12 +73,12 @@ namespace SwinAdventure
             return $"i cannot find the {thingId}";
         }
     }
- }
+}
 
 
 
 
-     
+
 
 
 

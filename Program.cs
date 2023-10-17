@@ -1,98 +1,56 @@
 ﻿using System;
-using SplashKitSDK;
-namespace ShapeDrawer
+using SwinAdventure;
+namespace SwinAdventure
 {
-     public class Program
+    public class Program
     {
-            private enum ShapeKind
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Enter player name:");
+            //player user input name
+            string p_name = Console.ReadLine();
+            Console.WriteLine("Enter player Description:");
+            //player user input description
+            string p_D = Console.ReadLine();
+
+            //create player object
+            Player player_input = new Player(p_name, p_D);
+
+            //create items
+            Item gun = new Item(new string[] { "gun" }, "Air gun", "this is a gun");
+            Item bow = new Item(new string[] { "bow" }, "Hunting bow", "this is a bow");
+
+            //add items in players inventory
+            player_input.Inventory.Put(gun);
+            player_input.Inventory.Put(bow);
+
+            //create bag
+            Bag bag = new Bag(new string[] { "bag" }, "backpack", "this is a bag");
+
+            //add bag in players inventory
+            player_input.Inventory.Put(bag);
+
+            //create another item
+            Item shield = new Item(new string[] { "shield" }, "body bunker", "this is shield");
+            bag.Inventory.Put(shield);
+
+            //loop reading commands 
+            do
             {
-                Rectangle,
-                Circle,
-                Line
+                LookCommand cmd = new LookCommand();
+                Console.Write("\nenter command:\n");
+                string input = Console.ReadLine();
+                string[] inputs = input.Split(' ');
+
+                //get the look command to execute
+                Console.Write(cmd.Execute(player_input, inputs));
             }
-            
-    public static void Main()
-            {
-                Window window = new Window("Shape Drawer", 800, 600);
-                Drawing mydraw = new Drawing();
-                ShapeKind kindToAdd = ShapeKind.Circle;
-                do
-                {
-                    SplashKit.ProcessEvents();
-                    SplashKit.ClearScreen();
-                    if (SplashKit.KeyTyped(KeyCode.RKey))
-                    {
-                        kindToAdd = ShapeKind.Rectangle;
-                    }
-                    if (SplashKit.KeyTyped(KeyCode.CKey))
-                    {
-                        kindToAdd = ShapeKind.Circle;
-                    }
-                    if (SplashKit.KeyTyped(KeyCode.LKey))
-                    {
-                        kindToAdd = ShapeKind.Line;
-                    }
-                    if (SplashKit.MouseClicked(MouseButton.LeftButton))
-                    {
-                        Shape newShape;
-                        if (kindToAdd == ShapeKind.Circle)
-                        {
-                            MyCircle newCircle = new MyCircle();
-                            newShape = newCircle;
-                        }
-                        else if (kindToAdd == ShapeKind.Rectangle)
-                        {
-                            MyRectangel newRect = new MyRectangel();
-                            newShape = newRect;
-                        }
-                        else
-                        {
-                            MyLine newLine = new MyLine();
-                            newShape = newLine;
-                        }
-                        newShape.X = SplashKit.MouseX();
-                        newShape.Y = SplashKit.MouseY();
-                        mydraw.AddShape(newShape);
-                    }
-                    if (SplashKit.MouseClicked(MouseButton.RightButton))
-                    {
-                        mydraw.SelectShapesAt(SplashKit.MousePosition());
-                    }
-                    if (SplashKit.KeyTyped(KeyCode.SpaceKey))
-                    {
-                        mydraw.Background = SplashKit.RandomColor();
-                    }
-                    if (SplashKit.KeyTyped(KeyCode.DeleteKey) || SplashKit.KeyTyped(KeyCode.BackspaceKey))
-
-                    {
-                        foreach (Shape s in mydraw.SelectedShapes)
-                        {
-                            mydraw.RemoveShape(s);
-                        }
-                    }
-
-                    if (SplashKit.KeyTyped(KeyCode.SKey))
-                    {
-                        mydraw.Save("/Users/imseohyeon/Desktop/TestDrawing.txt");
-                    }
-
-                    if (SplashKit.KeyTyped(KeyCode.OKey))
-                    {
-                        try
-                        {
-                            mydraw.Load("/Users/imseohyeon/Desktop/TestDrawing.txt");
-                        }
-                        catch(Exception e)
-                        {
-                            Console.Error.WriteLine("Error loading file:{0}", e.Message);
-                        }                        
-                    }
-
-                mydraw.Draw();
-                    SplashKit.RefreshScreen();
-                }
-                while (!window.CloseRequested);
-            }
-
-     }
+            while (true);           
+        }
+    }
 }
+
+
+
+
+
