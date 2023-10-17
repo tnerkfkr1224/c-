@@ -3,40 +3,25 @@ using SplashKitSDK;
 
 namespace ShapeDrawer
 {
-    public class Shape
+    public abstract class Shape
     {
         private Color _color;
-        private float _x, _y;
-        private int _width, _height;
+        //Shape's position
+        private float _x, _y;     
         private bool _selected;
 
-
-        //constructor
-        public Shape()
+        public Shape(Color color)
         {
+            _color = color;
             _x = 0;
             _y = 0;
-            _height = 100;
-            _width = 100;
-            _color = Color.Green;
-
         }
 
-        //property
-        public bool Selected
+        public Shape() :this(Color.Yellow)
         {
-            get
-            {
-                return _selected;
-            }
-            set
-            {
-                _selected = value;
-            }
         }
 
-
-        public Color color
+        public Color Color
         {
             get
             {
@@ -72,55 +57,26 @@ namespace ShapeDrawer
             }
         }
 
-        public int Width
+
+
+        public abstract void Draw();
+
+
+
+        public abstract bool IsAt(Point2D pt);     
+
+        public bool Selected
         {
             get
             {
-                return _width;
+                return _selected;
             }
             set
             {
-                _width = value;
+                _selected = value;
             }
         }
 
-        public int Height
-        {
-            get
-            {
-                return _height;
-            }
-            set
-            {
-                _height = value;
-            }
-        }
-
-        public bool IsAt(Point2D pt)
-        {
-            if ((((pt.X >= _x) && (pt.X <= (_x + _width))) && (pt.Y >= _y) && (pt.Y <= (_y + _height))))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void Draw()
-        {
-            SplashKit.FillRectangle(_color, _x, _y, _width, _height);
-
-            if(_selected==true)
-            {
-                DrawOurline();
-            }
-        }
-
-        public void DrawOurline()
-        {
-            SplashKit.DrawRectangle(SplashKit.ColorBlack(), _x - 2, _y - 2, _width+4, _height+ 4);
-        }
+        public abstract void DrawOutline();        
     }
 }

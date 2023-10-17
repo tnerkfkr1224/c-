@@ -1,53 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using SplashKitSDK;
-
+using System.Collections.Generic;
 
 namespace ShapeDrawer
 {
     public class Drawing
     {
-        //List<Shape> is a List of referneces to Shape objects
         private readonly List<Shape> _shapes;
         private Color _background;
 
-
-        //this is used to refer to current object
-        //default constructor
-        public Drawing() : this(Color.White) { }
-
-        //constructor
         public Drawing(Color background)
         {
             _shapes = new List<Shape>();
             _background = background;
-
-        }
-
-        public List<Shape> SelectedShapes
-        {
-            get
-            {
-                List<Shape> result;
-                result = new List<Shape>();
-                foreach (Shape s in _shapes)
-                {
-                    if (s.Selected)
-                    {
-                        result.Add(s);
-                    }
-                }
-                return result;
-            }
-        }
-
-        //number of shapes within the collection
-        public int ShapeCount
-        {
-            get
-            {
-                return _shapes.Count;
-            }
         }
 
         public Color Background
@@ -62,16 +27,32 @@ namespace ShapeDrawer
             }
         }
 
-
-        public void Draw()
+        public Drawing() : this(Color.White)
         {
-            SplashKit.ClearScreen(_background);
-            foreach (Shape sh in _shapes)
+
+        }
+
+        public int ShapeCount
+        {
+            get
             {
-                sh.Draw();
+                return _shapes.Count;
             }
         }
 
+        public void AddShape(Shape s)
+        {
+            _shapes.Add(s);
+        }
+
+        public void Draw()
+        {
+            SplashKit.ClearScreen(Background);
+            foreach (Shape sh in _shapes)
+            {
+                sh.Draw();                
+            }
+        }
 
         public void SelectShapesAt(Point2D pt)
         {
@@ -88,9 +69,20 @@ namespace ShapeDrawer
             }
         }
 
-        public void AddShape(Shape s)
+        public List<Shape> SelectedShapes
         {
-            _shapes.Add(s);
+            get
+            {
+                List<Shape> result = new List<Shape>();
+                foreach (Shape s in _shapes)
+                {
+                    if (s.Selected)
+                    {
+                        result.Add(s);
+                    }
+                }
+                return result;
+            }
         }
 
         public void RemoveShape(Shape s)
@@ -99,11 +91,5 @@ namespace ShapeDrawer
         }
     }
 }
-
-
-
-
-
-
 
 
