@@ -1,5 +1,7 @@
 ﻿using System;
 using SplashKitSDK;
+using MyGame;
+using System.IO;
 
 namespace ShapeDrawer
 {
@@ -7,7 +9,7 @@ namespace ShapeDrawer
     {
         private Color _color;
         //Shape's position
-        private float _x, _y;     
+        private float _x, _y;
         private bool _selected;
 
         public Shape(Color color)
@@ -17,11 +19,10 @@ namespace ShapeDrawer
             _y = 0;
         }
 
-        public Shape() :this(Color.Yellow)
-        {
-        }
+        public Shape() : this(Color.Yellow) { }
 
-        public Color Color
+
+        public Color color
         {
             get
             {
@@ -57,13 +58,8 @@ namespace ShapeDrawer
             }
         }
 
-
-
         public abstract void Draw();
-
-
-
-        public abstract bool IsAt(Point2D pt);     
+        public abstract bool IsAt(Point2D pt);
 
         public bool Selected
         {
@@ -76,7 +72,21 @@ namespace ShapeDrawer
                 _selected = value;
             }
         }
+        public abstract void DrawOutline();
 
-        public abstract void DrawOutline();        
+        public virtual void SaveTo(StreamWriter writer)
+        {
+            writer.WriteColor(_color);
+            writer.WriteLine(X);
+            writer.WriteLine(Y);
+        }
+
+
+        public virtual void LoadFrom(StreamReader reader)
+        {
+            color = reader.ReadColor();
+            X = reader.ReadInteger();
+            Y = reader.ReadInteger();
+        }
     }
 }

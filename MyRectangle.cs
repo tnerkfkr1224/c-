@@ -1,17 +1,16 @@
 ﻿using System;
 using SplashKitSDK;
-
+using MyGame;
 namespace ShapeDrawer
 {
     public class MyRectangel : Shape
     {
         private int _width, _height;
-
-        public MyRectangel() :this(Color.Green,0,0,100,100)
+        public MyRectangel() : this(Color.Green, 0, 0, 100, 100)
         {
         }
 
-        public MyRectangel(Color clr,float x,float y,int width,int height):base(clr)
+        public MyRectangel(Color clr, float x, float y, int width, int height) : base(clr)
         {
             X = x;
             Y = y;
@@ -46,7 +45,7 @@ namespace ShapeDrawer
         public override void Draw()
         {
             if (Selected) DrawOutline();
-            SplashKit.FillRectangle(Color, X, Y, Width, Height);
+            SplashKit.FillRectangle(color, X, Y, Width, Height);
         }
 
         public override void DrawOutline()
@@ -65,8 +64,21 @@ namespace ShapeDrawer
                 return false;
             }
         }
+
+        public override void SaveTo(StreamWriter writer)
+        {
+            writer.WriteLine("Rectangle");
+            base.SaveTo(writer);
+            writer.WriteLine(Width);
+            writer.WriteLine(Height);
+        }
+
+        public override void LoadFrom(StreamReader reader)
+        {
+            base.LoadFrom(reader);
+            Width = reader.ReadInteger();
+            Height = reader.ReadInteger();
+        }
     }
-        
-        
-    
 }
+

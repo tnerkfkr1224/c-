@@ -1,6 +1,7 @@
 ﻿using System;
 using SplashKitSDK;
-using System.Collections.Generic;
+using MyGame;
+using System.IO;
 
 namespace ShapeDrawer
 {
@@ -26,12 +27,9 @@ namespace ShapeDrawer
                 _background = value;
             }
         }
-
         public Drawing() : this(Color.White)
-        {
-
-        }
-
+        { }
+        
         public int ShapeCount
         {
             get
@@ -50,7 +48,7 @@ namespace ShapeDrawer
             SplashKit.ClearScreen(Background);
             foreach (Shape sh in _shapes)
             {
-                sh.Draw();                
+                sh.Draw();
             }
         }
 
@@ -89,7 +87,64 @@ namespace ShapeDrawer
         {
             _shapes.Remove(s);
         }
+
+        public void Save(string filename)
+        {
+            StreamWriter writer = new StreamWriter(filename);
+            try
+            {
+                writer.WriteColor(Background);
+                writer.WriteLine(ShapeCount);
+
+                foreach (Shape s in _shapes)
+                {
+                    s.SaveTo(writer);
+                }
+            }
+            finally
+            {
+                writer.Close();
+            }
+        }
+
+        public void Load(string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            Background = reader.ReadColor();
+            int count = reader.ReadInteger();
+
+            try
+            {
+                _shapes.Clear();
+
+                for (int i = 0; i < count; i++)
+                {
+                    Shape s;
+                    string kind;
+                    kind = reader.ReadLine();
+                    switch (kind)
+                    {
+                        case "Rectangle":
+                            s = new MyRectangel();
+                            break;
+                        case "Circle":
+                            s = new MyCircle();
+                            break;
+                        case "Line":
+                            s = new MyLine();
+                            break;
+                        default:
+                            throw new InvalidDataException("Uknwon shape kind:" + kind);
+                    }
+                    s.LoadFrom(reader);
+                    AddShape(s);
+                }
+            }
+            finally
+            {
+                reader.Close();
+            }
+        }
     }
 }
-
-
+ 

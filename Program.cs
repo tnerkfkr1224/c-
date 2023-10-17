@@ -1,96 +1,98 @@
 ﻿using System;
 using SplashKitSDK;
-
 namespace ShapeDrawer
 {
-    public class Program
+     public class Program
     {
-        private enum ShapeKind
-        {
-            Rectangle,
-            Circle,
-            Line
-        }
-
-        public static void Main()
-        {
-            
-            Window window = new Window("Shape Drawer", 800, 600);
-            Drawing mydraw = new Drawing();
-            ShapeKind kindToAdd=ShapeKind.Circle;
-
-            do
+            private enum ShapeKind
             {
-                SplashKit.ProcessEvents();
-                SplashKit.ClearScreen();
-
-
-                if (SplashKit.KeyTyped(KeyCode.RKey))
+                Rectangle,
+                Circle,
+                Line
+            }
+            
+    public static void Main()
+            {
+                Window window = new Window("Shape Drawer", 800, 600);
+                Drawing mydraw = new Drawing();
+                ShapeKind kindToAdd = ShapeKind.Circle;
+                do
                 {
-                    kindToAdd = ShapeKind.Rectangle;
-                }
-
-                if (SplashKit.KeyTyped(KeyCode.CKey))
-                {
-                    kindToAdd = ShapeKind.Circle;
-                }
-
-                if (SplashKit.KeyTyped(KeyCode.LKey))
-                {
-                    kindToAdd = ShapeKind.Line;
-                }
-
-                if (SplashKit.MouseClicked(MouseButton.LeftButton))
-                {
-                    Shape newShape;
-
-                    if(kindToAdd ==ShapeKind.Circle)
+                    SplashKit.ProcessEvents();
+                    SplashKit.ClearScreen();
+                    if (SplashKit.KeyTyped(KeyCode.RKey))
                     {
-                        MyCircle newCircle = new MyCircle();                       
-                        newShape = newCircle;
+                        kindToAdd = ShapeKind.Rectangle;
+                    }
+                    if (SplashKit.KeyTyped(KeyCode.CKey))
+                    {
+                        kindToAdd = ShapeKind.Circle;
+                    }
+                    if (SplashKit.KeyTyped(KeyCode.LKey))
+                    {
+                        kindToAdd = ShapeKind.Line;
+                    }
+                    if (SplashKit.MouseClicked(MouseButton.LeftButton))
+                    {
+                        Shape newShape;
+                        if (kindToAdd == ShapeKind.Circle)
+                        {
+                            MyCircle newCircle = new MyCircle();
+                            newShape = newCircle;
+                        }
+                        else if (kindToAdd == ShapeKind.Rectangle)
+                        {
+                            MyRectangel newRect = new MyRectangel();
+                            newShape = newRect;
+                        }
+                        else
+                        {
+                            MyLine newLine = new MyLine();
+                            newShape = newLine;
+                        }
+                        newShape.X = SplashKit.MouseX();
+                        newShape.Y = SplashKit.MouseY();
+                        mydraw.AddShape(newShape);
+                    }
+                    if (SplashKit.MouseClicked(MouseButton.RightButton))
+                    {
+                        mydraw.SelectShapesAt(SplashKit.MousePosition());
+                    }
+                    if (SplashKit.KeyTyped(KeyCode.SpaceKey))
+                    {
+                        mydraw.Background = SplashKit.RandomColor();
+                    }
+                    if (SplashKit.KeyTyped(KeyCode.DeleteKey) || SplashKit.KeyTyped(KeyCode.BackspaceKey))
+
+                    {
+                        foreach (Shape s in mydraw.SelectedShapes)
+                        {
+                            mydraw.RemoveShape(s);
+                        }
                     }
 
-                    else if (kindToAdd == ShapeKind.Rectangle)
+                    if (SplashKit.KeyTyped(KeyCode.SKey))
                     {
-                        MyRectangel newRect = new MyRectangel();                        
-                        newShape = newRect;
+                        mydraw.Save("/Users/imseohyeon/Desktop/TestDrawing.txt");
                     }
 
-                    else
+                    if (SplashKit.KeyTyped(KeyCode.OKey))
                     {
-                        MyLine newLine = new MyLine();
-                        newShape = newLine ;
+                        try
+                        {
+                            mydraw.Load("/Users/imseohyeon/Desktop/TestDrawing.txt");
+                        }
+                        catch(Exception e)
+                        {
+                            Console.Error.WriteLine("Error loading file:{0}", e.Message);
+                        }                        
                     }
-
-
-                    newShape.X = SplashKit.MouseX();
-                    newShape.Y = SplashKit.MouseY();
-                    mydraw.AddShape(newShape);
-                }
-
-                if (SplashKit.MouseClicked(MouseButton.RightButton))
-                {
-                    mydraw.SelectShapesAt(SplashKit.MousePosition());
-                }
-
-
-                if (SplashKit.KeyTyped(KeyCode.SpaceKey))
-                {
-                    mydraw.Background = SplashKit.RandomColor();
-                }
-
-                if (SplashKit.KeyTyped(KeyCode.DeleteKey) || SplashKit.KeyTyped(KeyCode.BackspaceKey))
-                {
-                    foreach (Shape s in mydraw.SelectedShapes)
-                    {
-                        mydraw.RemoveShape(s);
-                    }
-                }
 
                 mydraw.Draw();
-                SplashKit.RefreshScreen();
+                    SplashKit.RefreshScreen();
+                }
+                while (!window.CloseRequested);
             }
-            while (!window.CloseRequested);
-        }
-    }
+
+     }
 }

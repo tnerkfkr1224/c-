@@ -1,57 +1,55 @@
 ﻿using System;
+using MyGame;
 using SplashKitSDK;
-
 namespace ShapeDrawer
 {
-    public class MyLine :Shape
-    {
-        private float _endX, _endY;
+     public class MyLine : Shape
+     {
+         private float _endX, _endY;
 
-        public MyLine() : this(Color.Blue)
-        {
-        }
+         public MyLine() : this(Color.Blue) { }
+
 
         public MyLine(Color clr) : base(clr)
-        {
+         {
+             _endX = 50;
+             _endY = 50;
+         }
 
-            _endX = 50;
-            _endY = 50;
-        }
-
-        public float EndX
-        {
-            get
-            {
+         public float EndX
+         {
+             get
+             {
                 return _endX;
-            }
-            set
-            {
+             }
+             set
+             {
                 _endX = value;
-            }
-        }
+             }
+         }
 
-        public float EndY
-        {
-            get
-            {
-                return _endY;
-            }
-            set
-            {
-                _endY = value;
-            }
-        }
+         public float EndY
+         {
+             get
+             {
+                  return _endY;
+             }
+             set
+             {
+                 _endY = value;
+             }
+         }
 
-        public  override void Draw()
-        {
-            SplashKit.DrawLine(color, X, Y, _endX, _endY);
-            if (Selected)
-            {
-                DrawOurline();
-            }
-        }
+         public override void Draw()
+         {
+             SplashKit.DrawLine(color, X, Y, _endX, _endY);
+             if (Selected)
+                 {
+                        DrawOutline();
+                 }
+             }
 
-        public override void DrawOurline()
+        public override void DrawOutline()
         {
             SplashKit.DrawCircle(Color.Black, X, Y, 3);
             SplashKit.DrawCircle(Color.Black, EndX, EndY, 3);
@@ -59,7 +57,18 @@ namespace ShapeDrawer
 
         public override bool IsAt(Point2D pt)
         {
-            return SplashKit.PointOnLine(pt, SplashKit.LineFrom(X,Y,EndX,EndY));
+            return SplashKit.PointOnLine(pt, SplashKit.LineFrom(X, Y, EndX, EndY));
+        }
+
+        public override void SaveTo(StreamWriter writer)
+        {
+            writer.WriteLine("Line");
+            base.SaveTo(writer);
+        }
+
+        public override void LoadFrom(StreamReader reader)
+        {
+            base.LoadFrom(reader);
         }
     }
 }
